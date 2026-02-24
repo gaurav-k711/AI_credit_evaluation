@@ -1,0 +1,1153 @@
+<!-- BOOTSTRAP -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="form-shell theme-agri" id="formShell">
+
+  <!-- Animated Background Layers -->
+  <div class="bg-layer bg-main"></div>
+  <div class="bg-layer bg-particles"></div>
+  <div class="bg-layer bg-float"></div>
+
+  <!-- MAIN CARD -->
+  <div class="glass-card">
+
+    <!-- HEADER -->
+    <div class="form-head">
+      <div class="form-head-left">
+        <div class="logo-badge">🌾</div>
+        <div>
+          <h2 id="formTitle"></h2>
+          <p id="formIntro"></p>
+        </div>
+      </div>
+
+      <div class="form-head-right">
+        <div class="secure-pill">
+          🔐 <span id="secureText"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUSINESS TYPE TABS -->
+    <div class="biz-tabs-wrap">
+      <div class="biz-tabs" id="bizTabs">
+
+        <button class="biz-tab active" onclick="selectBusiness('Agricultural Enterprise')" id="tabAgri">
+          <span class="tab-emoji">🌾</span>
+          <span id="tabAgriText"></span>
+        </button>
+
+        <button class="biz-tab" onclick="selectBusiness('Retail')" id="tabRetail">
+          <span class="tab-emoji">🏪</span>
+          <span id="tabRetailText"></span>
+        </button>
+
+        <button class="biz-tab" onclick="selectBusiness('Manufacturing')" id="tabManu">
+          <span class="tab-emoji">🏭</span>
+          <span id="tabManuText"></span>
+        </button>
+
+        <button class="biz-tab" onclick="selectBusiness('Trading')" id="tabTrade">
+          <span class="tab-emoji">📦</span>
+          <span id="tabTradeText"></span>
+        </button>
+
+        <div class="biz-indicator" id="bizIndicator"></div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <form class="mt-4" onsubmit="event.preventDefault(); predictRisk();">
+
+      <!-- BANK NAME ALWAYS REQUIRED -->
+      <div class="section-title">
+        <span class="section-dot"></span>
+        <span id="bankSectionTitle"></span>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="field-label" id="lblBank"></label>
+          <input class="neon-input" id="bank_name" required placeholder="e.g. SBI, HDFC, ICICI, NABARD">
+        </div>
+
+        <div class="col-md-4">
+          <label class="field-label" id="lblBranch"></label>
+          <input class="neon-input" id="bank_branch" placeholder="Branch / IFSC (Optional)">
+        </div>
+      </div>
+
+      <!-- APPLICANT BASIC -->
+      <div class="section-title mt-4">
+        <span class="section-dot"></span>
+        <span id="basicSectionTitle"></span>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="field-label" id="lblFirst"></label>
+          <input class="neon-input" id="first_name" placeholder="Enter first name">
+        </div>
+        <div class="col-md-6">
+          <label class="field-label" id="lblLast"></label>
+          <input class="neon-input" id="last_name" placeholder="Enter last name">
+        </div>
+
+        <div class="col-md-4">
+          <label class="field-label" id="lblPhone"></label>
+          <input class="neon-input" id="phone" placeholder="10-digit mobile">
+        </div>
+
+        <div class="col-md-4">
+          <label class="field-label" id="lblState"></label>
+          <input class="neon-input" id="state" placeholder="State">
+        </div>
+
+        <div class="col-md-4">
+          <label class="field-label" id="lblDistrict"></label>
+          <input class="neon-input" id="district" placeholder="District">
+        </div>
+      </div>
+
+      <!-- DYNAMIC BUSINESS FORM -->
+      <div class="section-title mt-4">
+        <span class="section-dot"></span>
+        <span id="domainSectionTitle"></span>
+      </div>
+
+      <!-- AGRI -->
+      <div class="domain-box show" id="domainAgri">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="field-label" id="lblLand"></label>
+            <input type="number" class="neon-input" id="land_size" placeholder="e.g. 2.5">
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label" id="lblCrop"></label>
+            <select class="neon-select" id="crop_type">
+              <option>Wheat</option>
+              <option>Rice</option>
+              <option>Cotton</option>
+              <option>Maize</option>
+              <option>Sugarcane</option>
+              <option>Pulses</option>
+              <option>Vegetables</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label" id="lblIrrigation"></label>
+            <select class="neon-select" id="irrigation">
+              <option>Canal</option>
+              <option>Borewell</option>
+              <option>Rainfed</option>
+              <option>Drip Irrigation</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblSeason"></label>
+            <select class="neon-select" id="season">
+              <option>Kharif</option>
+              <option>Rabi</option>
+              <option>Zaid</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblFarmerType"></label>
+            <select class="neon-select" id="farmer_category">
+              <option>Small Farmer</option>
+              <option>Marginal Farmer</option>
+              <option>Medium Farmer</option>
+              <option>Large Farmer</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ESG -->
+        <div class="mini-card mt-3">
+          <div class="mini-title" id="esgTitle"></div>
+
+          <div class="row g-2">
+            <div class="col-md-4">
+              <label class="check-pill">
+                <input type="checkbox" id="womenLed">
+                <span id="lblWomen"></span>
+              </label>
+            </div>
+
+            <div class="col-md-4">
+              <label class="check-pill">
+                <input type="checkbox" id="organicFarm">
+                <span id="lblOrganic"></span>
+              </label>
+            </div>
+
+            <div class="col-md-4">
+              <label class="check-pill">
+                <input type="checkbox" id="smallFarmer">
+                <span id="lblSmall"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RETAIL -->
+      <div class="domain-box" id="domainRetail">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="field-label" id="lblShopType"></label>
+            <select class="neon-select" id="retail_shop_type">
+              <option>Grocery / Kirana</option>
+              <option>Agri Inputs Store</option>
+              <option>Seeds & Fertilizer</option>
+              <option>Pharmacy</option>
+              <option>Clothing</option>
+              <option>Electronics</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblFootfall"></label>
+            <select class="neon-select" id="retail_footfall">
+              <option>Low</option>
+              <option>Medium</option>
+              <option>High</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblPOS"></label>
+            <select class="neon-select" id="retail_pos">
+              <option>Yes (Digital Billing)</option>
+              <option>No (Manual)</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblSupplier"></label>
+            <select class="neon-select" id="retail_supplier">
+              <option>Local Distributor</option>
+              <option>Company Direct</option>
+              <option>Mixed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- MANUFACTURING -->
+      <div class="domain-box" id="domainManu">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="field-label" id="lblFactoryType"></label>
+            <select class="neon-select" id="manu_type">
+              <option>Food Processing</option>
+              <option>Dairy / Milk Unit</option>
+              <option>Rice Mill</option>
+              <option>Cold Storage</option>
+              <option>Textile</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblEmployees"></label>
+            <input type="number" class="neon-input" id="manu_employees" placeholder="e.g. 12">
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblPower"></label>
+            <select class="neon-select" id="manu_power">
+              <option>Stable</option>
+              <option>Unstable</option>
+              <option>Generator Backup</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblCompliance"></label>
+            <select class="neon-select" id="manu_compliance">
+              <option>GST + Licenses Complete</option>
+              <option>Partial</option>
+              <option>Not Available</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRADING -->
+      <div class="domain-box" id="domainTrade">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="field-label" id="lblTradeType"></label>
+            <select class="neon-select" id="trade_type">
+              <option>Agri Commodity</option>
+              <option>Wholesale Goods</option>
+              <option>Retail Supply Chain</option>
+              <option>Transport Logistics</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblTradeArea"></label>
+            <select class="neon-select" id="trade_area">
+              <option>Local</option>
+              <option>State</option>
+              <option>National</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblInventory"></label>
+            <select class="neon-select" id="trade_inventory">
+              <option>Low</option>
+              <option>Medium</option>
+              <option>High</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="field-label" id="lblTransport"></label>
+            <select class="neon-select" id="trade_transport">
+              <option>Owned Vehicle</option>
+              <option>Hired Transport</option>
+              <option>Mixed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- FINANCIAL DETAILS -->
+      <div class="section-title mt-4">
+        <span class="section-dot"></span>
+        <span id="financeTitle"></span>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="field-label" id="lblYears"></label>
+          <input type="number" class="neon-input" id="years_in_operation" placeholder="e.g. 2">
+        </div>
+
+        <div class="col-md-3">
+          <label class="field-label" id="lblRevenue"></label>
+          <input type="number" class="neon-input" id="annual_revenue" placeholder="e.g. 800000">
+        </div>
+
+        <div class="col-md-3">
+          <label class="field-label" id="lblCashflow"></label>
+          <input type="number" class="neon-input" id="monthly_cashflow" placeholder="e.g. 45000">
+        </div>
+
+        <div class="col-md-3">
+          <label class="field-label" id="lblLoan"></label>
+          <input type="number" class="neon-input" id="loan_amount_requested" placeholder="e.g. 250000">
+        </div>
+
+        <div class="col-md-4">
+          <label class="field-label" id="lblScore"></label>
+          <input type="number" class="neon-input" id="credit_score" placeholder="e.g. 720">
+        </div>
+
+        <div class="col-md-4">
+          <label class="field-label" id="lblLoans"></label>
+          <input type="number" class="neon-input" id="existing_loans" placeholder="e.g. 1">
+        </div>
+
+        <div class="col-md-4">
+          <label class="field-label" id="lblDTI"></label>
+          <input type="number" step="0.01" class="neon-input" id="debt_to_income_ratio" placeholder="e.g. 0.25">
+        </div>
+      </div>
+
+      <!-- AGREEMENT -->
+      <div class="agree-box mt-4">
+        <label class="agree-check">
+          <input type="checkbox" id="agree" required>
+          <span id="lblAgree"></span>
+        </label>
+      </div>
+
+      <!-- SUBMIT -->
+      <div class="mt-4 d-grid">
+        <button class="glow-btn" id="btnPredict" type="submit"></button>
+      </div>
+
+      <!-- RESULT -->
+      <div id="result" class="result-box mt-4"></div>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- ========================= JS ========================= -->
+<script>
+let selectedBusiness = "Agricultural Enterprise";
+
+function selectBusiness(type){
+  selectedBusiness = type;
+
+  // Tabs active
+  document.querySelectorAll(".biz-tab").forEach(b=>b.classList.remove("active"));
+  if(type==="Agricultural Enterprise") document.getElementById("tabAgri").classList.add("active");
+  if(type==="Retail") document.getElementById("tabRetail").classList.add("active");
+  if(type==="Manufacturing") document.getElementById("tabManu").classList.add("active");
+  if(type==="Trading") document.getElementById("tabTrade").classList.add("active");
+
+  // Indicator
+  const active = document.querySelector(".biz-tab.active");
+  const indicator = document.getElementById("bizIndicator");
+  indicator.style.width = active.offsetWidth + "px";
+  indicator.style.left = active.offsetLeft + "px";
+
+  // Hide all
+  document.querySelectorAll(".domain-box").forEach(d=>d.classList.remove("show"));
+  document.getElementById("domainAgri").classList.remove("show");
+  document.getElementById("domainRetail").classList.remove("show");
+  document.getElementById("domainManu").classList.remove("show");
+  document.getElementById("domainTrade").classList.remove("show");
+
+  // Show selected
+  if(type==="Agricultural Enterprise") document.getElementById("domainAgri").classList.add("show");
+  if(type==="Retail") document.getElementById("domainRetail").classList.add("show");
+  if(type==="Manufacturing") document.getElementById("domainManu").classList.add("show");
+  if(type==="Trading") document.getElementById("domainTrade").classList.add("show");
+
+  // Theme
+  const shell = document.getElementById("formShell");
+  shell.classList.remove("theme-agri","theme-retail","theme-manu","theme-trade");
+
+  if(type==="Agricultural Enterprise") shell.classList.add("theme-agri");
+  if(type==="Retail") shell.classList.add("theme-retail");
+  if(type==="Manufacturing") shell.classList.add("theme-manu");
+  if(type==="Trading") shell.classList.add("theme-trade");
+}
+
+function predictRisk(){
+  const bank = document.getElementById("bank_name").value.trim();
+  const agree = document.getElementById("agree").checked;
+
+  if(!bank){
+    document.getElementById("result").innerHTML =
+      "<div class='danger'>⚠️ Bank Name is required to submit this loan request.</div>";
+    return;
+  }
+  if(!agree){
+    document.getElementById("result").innerHTML =
+      "<div class='danger'>⚠️ Please accept the agreement to continue.</div>";
+    return;
+  }
+
+  const payload = {
+    business_type: selectedBusiness,
+    bank_name: bank,
+    bank_branch: document.getElementById("bank_branch").value,
+
+    first_name: document.getElementById("first_name").value,
+    last_name: document.getElementById("last_name").value,
+    phone: document.getElementById("phone").value,
+    state: document.getElementById("state").value,
+    district: document.getElementById("district").value,
+
+    // Agri
+    land_size: document.getElementById("land_size").value,
+    crop_type: document.getElementById("crop_type").value,
+    irrigation: document.getElementById("irrigation").value,
+    season: document.getElementById("season").value,
+    farmer_category: document.getElementById("farmer_category").value,
+
+    // ESG
+    womenLed: document.getElementById("womenLed").checked,
+    organicFarm: document.getElementById("organicFarm").checked,
+    smallFarmer: document.getElementById("smallFarmer").checked,
+
+    // Retail
+    retail_shop_type: document.getElementById("retail_shop_type").value,
+    retail_footfall: document.getElementById("retail_footfall").value,
+    retail_pos: document.getElementById("retail_pos").value,
+    retail_supplier: document.getElementById("retail_supplier").value,
+
+    // Manufacturing
+    manu_type: document.getElementById("manu_type").value,
+    manu_employees: document.getElementById("manu_employees").value,
+    manu_power: document.getElementById("manu_power").value,
+    manu_compliance: document.getElementById("manu_compliance").value,
+
+    // Trading
+    trade_type: document.getElementById("trade_type").value,
+    trade_area: document.getElementById("trade_area").value,
+    trade_inventory: document.getElementById("trade_inventory").value,
+    trade_transport: document.getElementById("trade_transport").value,
+
+    // Finance
+    years_in_operation: document.getElementById("years_in_operation").value,
+    annual_revenue: document.getElementById("annual_revenue").value,
+    monthly_cashflow: document.getElementById("monthly_cashflow").value,
+    loan_amount_requested: document.getElementById("loan_amount_requested").value,
+    credit_score: document.getElementById("credit_score").value,
+    existing_loans: document.getElementById("existing_loans").value,
+    debt_to_income_ratio: document.getElementById("debt_to_income_ratio").value
+  };
+
+  document.getElementById("result").innerHTML =
+    "<div class='loading'>⏳ AI Engine is evaluating risk & ESG impact...</div>";
+
+  fetch("/predict",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "X-API-KEY":"secure-credit-api-123"
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    document.getElementById("result").innerHTML = `
+      <div class="ok">
+        <div class="res-title">✅ AI Credit Result</div>
+        <div class="res-grid">
+          <div class="res-item"><span>Risk Score</span><b>${data.risk_score}%</b></div>
+          <div class="res-item"><span>Decision</span><b>${data.decision}</b></div>
+          <div class="res-item"><span>Confidence</span><b>${data.confidence}</b></div>
+          <div class="res-item"><span>ESG Score</span><b>${data.impact_score}</b></div>
+          <div class="res-item wide"><span>Recommended Credit Limit</span><b>₹${data.recommended_limit}</b></div>
+        </div>
+      </div>
+    `;
+  })
+  .catch(()=>{
+    document.getElementById("result").innerHTML =
+      "<div class='danger'>❌ Server error. Please try again.</div>";
+  });
+}
+</script>
+
+<!-- ========================= MULTI LANGUAGE ========================= -->
+<script>
+const formTranslations = {
+  en:{
+    formTitle:"AI Loan Application",
+    formIntro:"Smart credit evaluation with ESG impact + risk scoring for agriculture and enterprises.",
+    secureText:"Bank-grade secure application",
+    tabAgriText:"Agriculture",
+    tabRetailText:"Retail",
+    tabManuText:"Manufacturing",
+    tabTradeText:"Trading",
+    bankSectionTitle:"Bank Details (Required)",
+    basicSectionTitle:"Applicant Details",
+    domainSectionTitle:"Business Domain Details",
+    financeTitle:"Financial & Loan Details",
+    lblBank:"Bank Name *",
+    lblBranch:"Branch / IFSC",
+    lblFirst:"First Name",
+    lblLast:"Last Name",
+    lblPhone:"Mobile Number",
+    lblState:"State",
+    lblDistrict:"District",
+    lblLand:"Land Size (Acres)",
+    lblCrop:"Crop Type",
+    lblIrrigation:"Irrigation Type",
+    lblSeason:"Season",
+    lblFarmerType:"Farmer Category",
+    esgTitle:"ESG & Social Impact (Optional)",
+    lblWomen:"Women-led enterprise / FPO",
+    lblOrganic:"Organic farming",
+    lblSmall:"Small farmer category",
+    lblShopType:"Retail Shop Type",
+    lblFootfall:"Customer Footfall",
+    lblPOS:"Digital Billing (POS)",
+    lblSupplier:"Supplier Type",
+    lblFactoryType:"Manufacturing Unit Type",
+    lblEmployees:"Total Employees",
+    lblPower:"Power Availability",
+    lblCompliance:"Compliance / Licenses",
+    lblTradeType:"Trading Category",
+    lblTradeArea:"Trading Area",
+    lblInventory:"Inventory Level",
+    lblTransport:"Transport Type",
+    lblYears:"Years in Operation",
+    lblRevenue:"Annual Revenue",
+    lblCashflow:"Monthly Cashflow",
+    lblLoan:"Loan Amount Requested",
+    lblScore:"Credit Score",
+    lblLoans:"Existing Loans",
+    lblDTI:"Debt-to-Income Ratio",
+    lblAgree:"I confirm that the information provided is true and I agree to the platform terms.",
+    btnPredict:"Run AI Credit Evaluation"
+  },
+  hi:{
+    formTitle:"एआई ऋण आवेदन",
+    formIntro:"कृषि और उद्यमों के लिए ईएसजी + जोखिम स्कोरिंग के साथ स्मार्ट क्रेडिट मूल्यांकन।",
+    secureText:"बैंक-स्तरीय सुरक्षित आवेदन",
+    tabAgriText:"कृषि",
+    tabRetailText:"रिटेल",
+    tabManuText:"निर्माण",
+    tabTradeText:"ट्रेडिंग",
+    bankSectionTitle:"बैंक विवरण (आवश्यक)",
+    basicSectionTitle:"आवेदक विवरण",
+    domainSectionTitle:"व्यवसाय विवरण",
+    financeTitle:"वित्तीय और ऋण विवरण",
+    lblBank:"बैंक का नाम *",
+    lblBranch:"शाखा / IFSC",
+    lblFirst:"पहला नाम",
+    lblLast:"अंतिम नाम",
+    lblPhone:"मोबाइल नंबर",
+    lblState:"राज्य",
+    lblDistrict:"जिला",
+    lblLand:"भूमि आकार (एकड़)",
+    lblCrop:"फसल प्रकार",
+    lblIrrigation:"सिंचाई प्रकार",
+    lblSeason:"मौसम",
+    lblFarmerType:"किसान श्रेणी",
+    esgTitle:"ईएसजी और सामाजिक प्रभाव (वैकल्पिक)",
+    lblWomen:"महिला संचालित उद्यम / एफपीओ",
+    lblOrganic:"जैविक खेती",
+    lblSmall:"लघु किसान श्रेणी",
+    lblShopType:"दुकान प्रकार",
+    lblFootfall:"ग्राहक संख्या",
+    lblPOS:"डिजिटल बिलिंग",
+    lblSupplier:"आपूर्तिकर्ता प्रकार",
+    lblFactoryType:"यूनिट प्रकार",
+    lblEmployees:"कर्मचारी संख्या",
+    lblPower:"बिजली उपलब्धता",
+    lblCompliance:"लाइसेंस / अनुपालन",
+    lblTradeType:"ट्रेडिंग श्रेणी",
+    lblTradeArea:"व्यापार क्षेत्र",
+    lblInventory:"स्टॉक स्तर",
+    lblTransport:"परिवहन प्रकार",
+    lblYears:"संचालन के वर्ष",
+    lblRevenue:"वार्षिक राजस्व",
+    lblCashflow:"मासिक नकद प्रवाह",
+    lblLoan:"ऋण राशि",
+    lblScore:"क्रेडिट स्कोर",
+    lblLoans:"मौजूदा ऋण",
+    lblDTI:"ऋण-आय अनुपात",
+    lblAgree:"मैं पुष्टि करता हूं कि दी गई जानकारी सही है और मैं नियमों से सहमत हूं।",
+    btnPredict:"एआई मूल्यांकन चलाएं"
+  },
+  mr:{
+    formTitle:"एआय कर्ज अर्ज",
+    formIntro:"कृषी व उद्योगांसाठी ESG + जोखीम स्कोअरिंगसह स्मार्ट क्रेडिट मूल्यांकन.",
+    secureText:"बँक-स्तरीय सुरक्षित अर्ज",
+    tabAgriText:"कृषी",
+    tabRetailText:"रिटेल",
+    tabManuText:"निर्माण",
+    tabTradeText:"ट्रेडिंग",
+    bankSectionTitle:"बँक तपशील (आवश्यक)",
+    basicSectionTitle:"अर्जदार तपशील",
+    domainSectionTitle:"व्यवसाय तपशील",
+    financeTitle:"आर्थिक आणि कर्ज तपशील",
+    lblBank:"बँकेचे नाव *",
+    lblBranch:"शाखा / IFSC",
+    lblFirst:"पहिले नाव",
+    lblLast:"आडनाव",
+    lblPhone:"मोबाईल नंबर",
+    lblState:"राज्य",
+    lblDistrict:"जिल्हा",
+    lblLand:"जमीन आकार (एकर)",
+    lblCrop:"पीक प्रकार",
+    lblIrrigation:"सिंचन प्रकार",
+    lblSeason:"हंगाम",
+    lblFarmerType:"शेतकरी श्रेणी",
+    esgTitle:"ESG आणि सामाजिक प्रभाव (ऐच्छिक)",
+    lblWomen:"महिला चालवलेले उद्योग / एफपीओ",
+    lblOrganic:"सेंद्रिय शेती",
+    lblSmall:"लघु शेतकरी श्रेणी",
+    lblShopType:"दुकान प्रकार",
+    lblFootfall:"ग्राहक संख्या",
+    lblPOS:"डिजिटल बिलिंग",
+    lblSupplier:"पुरवठादार प्रकार",
+    lblFactoryType:"युनिट प्रकार",
+    lblEmployees:"कर्मचारी संख्या",
+    lblPower:"वीज उपलब्धता",
+    lblCompliance:"परवाने / अनुपालन",
+    lblTradeType:"ट्रेडिंग प्रकार",
+    lblTradeArea:"व्यापार क्षेत्र",
+    lblInventory:"स्टॉक स्तर",
+    lblTransport:"वाहतूक प्रकार",
+    lblYears:"कारभाराची वर्षे",
+    lblRevenue:"वार्षिक उत्पन्न",
+    lblCashflow:"मासिक रोख प्रवाह",
+    lblLoan:"कर्ज रक्कम",
+    lblScore:"क्रेडिट स्कोअर",
+    lblLoans:"सध्याची कर्जे",
+    lblDTI:"कर्ज-उत्पन्न गुणोत्तर",
+    lblAgree:"मी दिलेली माहिती खरी आहे आणि नियमांना सहमत आहे.",
+    btnPredict:"एआय मूल्यांकन चालवा"
+  },
+  ta:{
+    formTitle:"AI கடன் விண்ணப்பம்",
+    formIntro:"விவசாயம் மற்றும் நிறுவனங்களுக்கு ESG + அபாய மதிப்பீடு கொண்ட ஸ்மார்ட் கடன் மதிப்பீடு.",
+    secureText:"வங்கி தர பாதுகாப்பு",
+    tabAgriText:"விவசாயம்",
+    tabRetailText:"ரீடெயில்",
+    tabManuText:"உற்பத்தி",
+    tabTradeText:"வர்த்தகம்",
+    bankSectionTitle:"வங்கி விவரங்கள் (தேவை)",
+    basicSectionTitle:"விண்ணப்பதாரர் விவரங்கள்",
+    domainSectionTitle:"வணிக விவரங்கள்",
+    financeTitle:"நிதி மற்றும் கடன் விவரங்கள்",
+    lblBank:"வங்கி பெயர் *",
+    lblBranch:"கிளை / IFSC",
+    lblFirst:"முதல் பெயர்",
+    lblLast:"கடைசி பெயர்",
+    lblPhone:"மொபைல் எண்",
+    lblState:"மாநிலம்",
+    lblDistrict:"மாவட்டம்",
+    lblLand:"நில அளவு (ஏக்கர்)",
+    lblCrop:"பயிர் வகை",
+    lblIrrigation:"பாசன வகை",
+    lblSeason:"பருவம்",
+    lblFarmerType:"விவசாயி வகை",
+    esgTitle:"ESG மற்றும் சமூக தாக்கம் (விருப்பம்)",
+    lblWomen:"பெண்கள் நடத்தும் நிறுவனம் / FPO",
+    lblOrganic:"இயற்கை விவசாயம்",
+    lblSmall:"சிறு விவசாயி வகை",
+    lblShopType:"கடை வகை",
+    lblFootfall:"வாடிக்கையாளர் வருகை",
+    lblPOS:"டிஜிட்டல் பில்லிங்",
+    lblSupplier:"சப்ளையர் வகை",
+    lblFactoryType:"யூனிட் வகை",
+    lblEmployees:"பணியாளர் எண்ணிக்கை",
+    lblPower:"மின்சாரம் நிலை",
+    lblCompliance:"லைசன்ஸ் / ஒழுங்குமுறை",
+    lblTradeType:"வர்த்தக வகை",
+    lblTradeArea:"வர்த்தக பகுதி",
+    lblInventory:"ஸ்டாக் நிலை",
+    lblTransport:"போக்குவரத்து வகை",
+    lblYears:"செயல்பாட்டு ஆண்டுகள்",
+    lblRevenue:"ஆண்டு வருமானம்",
+    lblCashflow:"மாத வருமானம்",
+    lblLoan:"கடன் தொகை",
+    lblScore:"கடன் மதிப்பெண்",
+    lblLoans:"நடப்பு கடன்கள்",
+    lblDTI:"கடன்-வருமான விகிதம்",
+    lblAgree:"நான் கொடுத்த தகவல் சரியானது மற்றும் விதிகளுக்கு ஒப்புக்கொள்கிறேன்.",
+    btnPredict:"AI மதிப்பீட்டை இயக்கவும்"
+  }
+};
+
+function applyFormLanguage(lang){
+  const t=formTranslations[lang]||formTranslations.en;
+  Object.keys(t).forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.innerText=t[id];
+  });
+}
+
+setTimeout(()=>{
+  const lang=localStorage.getItem("selectedLang")||"en";
+  applyFormLanguage(lang);
+  selectBusiness("Agricultural Enterprise");
+  window.addEventListener("resize", ()=>selectBusiness(selectedBusiness));
+},200);
+</script>
+
+<!-- ========================= CSS ========================= -->
+<style>
+.form-shell{
+  min-height: 100vh;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* BACKGROUND LAYERS */
+.bg-layer{
+  position:absolute;
+  inset:-60px;
+  z-index:0;
+  pointer-events:none;
+  transition: 0.45s ease;
+}
+
+.glass-card{
+  max-width: 1180px;
+  margin:auto;
+  padding: 30px;
+  border-radius: 30px;
+  position: relative;
+  z-index: 2;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.45);
+  box-shadow: 0 30px 140px rgba(0,0,0,0.12);
+  backdrop-filter: blur(18px);
+}
+
+body.dark .glass-card{
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* HEADER */
+.form-head{
+  display:flex;
+  justify-content: space-between;
+  align-items:flex-start;
+  gap: 16px;
+}
+.form-head-left{
+  display:flex;
+  gap: 14px;
+  align-items:flex-start;
+}
+.logo-badge{
+  width: 56px;
+  height: 56px;
+  border-radius: 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 26px;
+  background: rgba(46,229,157,0.12);
+  border: 1px solid rgba(46,229,157,0.22);
+  box-shadow: 0 18px 80px rgba(46,229,157,0.10);
+}
+.form-head h2{margin:0;font-size:34px;font-weight:1200;}
+.form-head p{margin-top:10px;color:rgba(15,23,42,0.65);font-weight:950;max-width: 760px;}
+body.dark .form-head p{color: rgba(233,238,247,0.55);}
+
+.secure-pill{
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 1100;
+  font-size: 13px;
+  background: rgba(0,180,255,0.10);
+  border: 1px solid rgba(0,180,255,0.20);
+}
+
+/* SECTION TITLE */
+.section-title{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  font-weight: 1200;
+  margin-bottom: 10px;
+}
+.section-dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(46,229,157,0.9);
+  box-shadow: 0 0 0 6px rgba(46,229,157,0.14);
+}
+
+/* INPUTS */
+.field-label{
+  font-weight: 1100;
+  margin-bottom: 6px;
+  color: rgba(15,23,42,0.75);
+}
+body.dark .field-label{color: rgba(233,238,247,0.65);}
+
+.neon-input, .neon-select{
+  width:100%;
+  padding: 14px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(46,229,157,0.25);
+  background: rgba(255,255,255,0.78);
+  font-weight: 950;
+  outline:none;
+  transition: 0.22s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.75),
+    0 20px 90px rgba(0,0,0,0.06);
+}
+
+.neon-input:focus, .neon-select:focus{
+  transform: translateY(-1px);
+  border: 1px solid rgba(46,229,157,0.55);
+  box-shadow:
+    0 0 0 7px rgba(46,229,157,0.14),
+    0 30px 120px rgba(46,229,157,0.10);
+}
+
+/* Tabs */
+.biz-tabs-wrap{margin-top: 18px;}
+.biz-tabs{
+  position: relative;
+  display:flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.55);
+  overflow:hidden;
+}
+body.dark .biz-tabs{background: rgba(0,0,0,0.20);border:1px solid rgba(255,255,255,0.08);}
+
+.biz-tab{
+  flex:1;
+  border:none;
+  cursor:pointer;
+  border-radius: 18px;
+  padding: 12px 12px;
+  background: transparent;
+  font-weight: 1200;
+  transition: 0.25s ease;
+  position: relative;
+  z-index: 2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+}
+.biz-tab:hover{transform: translateY(-1px);}
+.biz-tab.active{color: rgba(15,23,42,0.92);}
+
+.biz-indicator{
+  position:absolute;
+  top:10px;
+  height: calc(100% - 20px);
+  border-radius: 18px;
+  background: rgba(46,229,157,0.14);
+  border: 1px solid rgba(46,229,157,0.22);
+  box-shadow: 0 22px 90px rgba(46,229,157,0.10);
+  transition: 0.32s ease;
+  z-index: 1;
+}
+
+.tab-emoji{font-size: 18px;}
+
+/* Domain */
+.domain-box{
+  margin-top: 12px;
+  padding: 18px;
+  border-radius: 26px;
+  background: rgba(255,255,255,0.40);
+  border: 1px solid rgba(255,255,255,0.55);
+  display:none;
+  animation: fadeUp 0.35s ease;
+}
+.domain-box.show{display:block;}
+@keyframes fadeUp{
+  from{opacity:0; transform: translateY(12px);}
+  to{opacity:1; transform: translateY(0px);}
+}
+
+.mini-card{
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(46,229,157,0.08);
+  border: 1px solid rgba(46,229,157,0.18);
+}
+.mini-title{font-weight:1200;margin-bottom:10px;}
+
+/* Checkbox pills */
+.check-pill{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.65);
+  font-weight: 1100;
+  cursor:pointer;
+  transition: 0.22s ease;
+}
+.check-pill:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 18px 70px rgba(0,0,0,0.10);
+}
+.check-pill input{transform: scale(1.2);}
+
+/* Agreement */
+.agree-box{
+  padding: 14px 16px;
+  border-radius: 22px;
+  background: rgba(0,180,255,0.08);
+  border: 1px solid rgba(0,180,255,0.16);
+}
+.agree-check{
+  display:flex;
+  gap: 12px;
+  align-items:flex-start;
+  font-weight: 1000;
+}
+.agree-check input{margin-top:4px; transform: scale(1.25);}
+
+/* Button */
+.glow-btn{
+  padding: 15px 16px;
+  border-radius: 22px;
+  border:none;
+  font-weight: 1300;
+  font-size: 16px;
+  cursor:pointer;
+  color: white;
+  background: linear-gradient(135deg, #1b5e20, #2ee59d);
+  box-shadow:
+    0 25px 120px rgba(46,229,157,0.22),
+    0 14px 40px rgba(0,0,0,0.14);
+  transition: 0.22s ease;
+}
+.glow-btn:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    0 35px 140px rgba(46,229,157,0.28),
+    0 18px 50px rgba(0,0,0,0.18);
+}
+.glow-btn:active{transform: translateY(0px) scale(0.99);}
+
+/* Result */
+.result-box{
+  min-height: 10px;
+}
+.loading, .danger, .ok{
+  padding: 16px;
+  border-radius: 22px;
+  font-weight: 1000;
+  border: 1px solid rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.55);
+}
+.ok{border: 1px solid rgba(46,229,157,0.22); background: rgba(46,229,157,0.08);}
+.danger{border: 1px solid rgba(255,99,132,0.22); background: rgba(255,99,132,0.08);}
+
+.res-title{font-size: 18px;font-weight:1200;margin-bottom:12px;}
+.res-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.res-item{
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.60);
+  display:flex;
+  justify-content: space-between;
+  font-weight: 1100;
+}
+.res-item span{color: rgba(15,23,42,0.65);}
+.res-item.wide{grid-column: span 2;}
+
+/* THEMES (backgrounds) */
+.form-shell.theme-agri .bg-main{
+  opacity: 0.95;
+  background:
+    radial-gradient(circle at top left, rgba(46,229,157,0.18), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(76,175,80,0.18), transparent 55%),
+    linear-gradient(135deg, rgba(232,245,233,0.80), rgba(241,248,233,0.75));
+  animation: bgMove 7s ease-in-out infinite alternate;
+}
+.form-shell.theme-agri .bg-particles{
+  opacity: 0.35;
+  background-image:
+    radial-gradient(circle, rgba(46,229,157,0.55) 1.4px, transparent 1.6px),
+    radial-gradient(circle, rgba(0,180,255,0.30) 1.2px, transparent 1.4px);
+  background-size: 40px 40px, 60px 60px;
+  animation: floatLeaves 12s linear infinite;
+}
+.form-shell.theme-agri .bg-float{
+  opacity: 0.20;
+  background:
+    radial-gradient(circle at 20% 40%, rgba(46,229,157,0.25), transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(0,180,255,0.18), transparent 60%);
+  animation: glow 6s ease-in-out infinite alternate;
+}
+
+.form-shell.theme-retail .bg-main{
+  opacity: 0.95;
+  background:
+    radial-gradient(circle at top left, rgba(0,180,255,0.18), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(46,229,157,0.10), transparent 55%),
+    linear-gradient(135deg, rgba(235,245,255,0.85), rgba(248,250,252,0.75));
+  animation: bgMove 8s ease-in-out infinite alternate;
+}
+.form-shell.theme-retail .bg-particles{
+  opacity: 0.22;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(0,180,255,0.22),
+      rgba(0,180,255,0.22) 12px,
+      transparent 12px,
+      transparent 24px
+    );
+  animation: stripes 12s linear infinite;
+}
+.form-shell.theme-retail .bg-float{
+  opacity: 0.18;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0,180,255,0.25), transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(46,229,157,0.18), transparent 60%);
+  animation: glow 6s ease-in-out infinite alternate;
+}
+
+.form-shell.theme-manu .bg-main{
+  opacity: 0.95;
+  background:
+    radial-gradient(circle at top left, rgba(255,193,7,0.16), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(0,180,255,0.16), transparent 55%),
+    linear-gradient(135deg, rgba(245,247,250,0.82), rgba(240,244,248,0.70));
+  animation: bgMove 9s ease-in-out infinite alternate;
+}
+.form-shell.theme-manu .bg-particles{
+  opacity: 0.28;
+  background-image:
+    radial-gradient(circle, rgba(0,0,0,0.12) 1.2px, transparent 1.6px);
+  background-size: 26px 26px;
+  animation: manuPulse 6s ease-in-out infinite alternate;
+}
+.form-shell.theme-manu .bg-float{
+  opacity: 0.16;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,193,7,0.25), transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(0,180,255,0.20), transparent 60%);
+  animation: glow 6s ease-in-out infinite alternate;
+}
+
+.form-shell.theme-trade .bg-main{
+  opacity: 0.95;
+  background:
+    radial-gradient(circle at top left, rgba(156,39,176,0.10), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(0,180,255,0.18), transparent 55%),
+    linear-gradient(135deg, rgba(245,240,255,0.78), rgba(250,250,252,0.70));
+  animation: bgMove 9s ease-in-out infinite alternate;
+}
+.form-shell.theme-trade .bg-particles{
+  opacity: 0.22;
+  background:
+    linear-gradient(90deg, rgba(0,180,255,0.20), transparent 55%),
+    linear-gradient(180deg, rgba(46,229,157,0.16), transparent 55%);
+  animation: tradeFlow 7s ease-in-out infinite alternate;
+}
+.form-shell.theme-trade .bg-float{
+  opacity: 0.18;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(156,39,176,0.22), transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(0,180,255,0.20), transparent 60%);
+  animation: glow 6s ease-in-out infinite alternate;
+}
+
+/* Animations */
+@keyframes bgMove{
+  from{transform: translateX(-10px) translateY(0px);}
+  to{transform: translateX(10px) translateY(-12px);}
+}
+@keyframes stripes{
+  from{transform: translateX(-40px);}
+  to{transform: translateX(40px);}
+}
+@keyframes floatLeaves{
+  from{transform: translateY(0px) translateX(0px);}
+  to{transform: translateY(-60px) translateX(40px);}
+}
+@keyframes manuPulse{
+  from{opacity:0.22; transform: scale(1);}
+  to{opacity:0.40; transform: scale(1.05);}
+}
+@keyframes tradeFlow{
+  from{transform: translateX(-20px) translateY(0px);}
+  to{transform: translateX(20px) translateY(-10px);}
+}
+@keyframes glow{
+  from{transform: scale(1);}
+  to{transform: scale(1.05);}
+}
+</style>

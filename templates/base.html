@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Agri Credit & FPO Risk Platform</title>
+
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* ===================== LAYOUT ===================== */
+.layout{
+  display:flex;
+  min-height:100vh;
+}
+
+/* ===================== SIDEBAR ===================== */
+.sidebar{
+  width: 270px;
+  background: linear-gradient(180deg, #1f7a3a, #0f3b1c);
+  color:#fff;
+  padding: 18px;
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+  box-shadow: 12px 0 55px rgba(0,0,0,0.22);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  transition: 0.32s ease;
+  z-index: 80;
+  overflow:hidden;
+}
+
+/* FULL HIDE SIDEBAR */
+.sidebar.hidden{
+  width: 0px;
+  padding: 0px;
+  border: none;
+  box-shadow: none;
+}
+
+/* When hidden -> hide all children completely */
+.sidebar.hidden *{
+  opacity:0;
+  pointer-events:none;
+}
+
+/* Sidebar header */
+.sb-top{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.sb-title{
+  font-size: 18px;
+  font-weight: 1000;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.nav-links{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.sidebar a{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  padding: 14px 14px;
+  border-radius: 16px;
+  color: white;
+  text-decoration:none;
+  font-weight: 950;
+  transition: 0.22s ease;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  white-space: nowrap;
+}
+
+.sidebar a:hover{
+  transform: translateX(4px);
+  background: rgba(255,255,255,0.14);
+}
+
+.sidebar a.active{
+  background: rgba(46,229,157,0.18);
+  border: 1px solid rgba(46,229,157,0.22);
+  box-shadow: 0 16px 55px rgba(46,229,157,0.10);
+}
+
+.sidebar a .icon{
+  font-size: 18px;
+  width: 26px;
+  display:flex;
+  justify-content:center;
+}
+
+/* ===================== CONTENT ===================== */
+.content{
+  flex:1;
+  padding: 24px;
+  overflow-y:auto;
+  transition: 0.32s ease;
+}
+
+/* when sidebar hidden -> content full */
+.content.full{
+  padding-left: 30px;
+}
+
+/* ===================== TOP BAR ===================== */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+/* Left: menu button */
+.menu-btn{
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  cursor:pointer;
+  transition: 0.25s ease;
+  font-size: 22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+body.dark .menu-btn{
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: var(--text);
+}
+
+.menu-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.12);
+}
+
+/* Right tools */
+.top-right{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+
+/* Language select */
+.lang-select{
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(255,255,255,0.65);
+  font-weight: 950;
+}
+
+body.dark .lang-select{
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: var(--text);
+}
+
+/* ===================== DARK MODE SWITCH ===================== */
+.dark-switch{
+  width: 74px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(255,255,255,0.65);
+  cursor:pointer;
+  position: relative;
+  transition: 0.28s ease;
+  display:flex;
+  align-items:center;
+  padding: 4px;
+}
+
+body.dark .dark-switch{
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.switch-ball{
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2ee59d, #1f7a3a);
+  box-shadow: 0 18px 50px rgba(46,229,157,0.20);
+  transition: 0.28s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 16px;
+  color:#fff;
+}
+
+/* move ball in dark */
+body.dark .switch-ball{
+  transform: translateX(34px);
+  background: linear-gradient(135deg, #00b4ff, #3d5afe);
+  box-shadow: 0 18px 50px rgba(0,180,255,0.18);
+}
+
+/* ===================== HOME HERO ===================== */
+.card{
+  background: rgba(255,255,255,0.62);
+  padding: 40px;
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.12);
+  max-width: 920px;
+  margin: 0 auto;
+  text-align:center;
+  position: relative;
+  overflow:hidden;
+  animation: fadeUp 0.6s ease both;
+}
+
+body.dark .card{
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.card::before{
+  content: "🌾 🌱 🌿";
+  position:absolute;
+  top:-10px;
+  right: 18px;
+  font-size: 58px;
+  opacity: 0.14;
+}
+
+.card h2{
+  font-size: 34px;
+  margin: 0;
+  font-weight: 1100;
+  color: #1f7a3a;
+}
+
+body.dark .card h2{
+  color: #8af0b8;
+}
+
+.card p{
+  font-size: 16px;
+  margin-top: 12px;
+  font-weight: 850;
+  color: #2b2b2b;
+  opacity: 0.9;
+}
+
+body.dark .card p{
+  color: #d8d8d8;
+}
+
+@keyframes fadeUp{
+  from{opacity:0; transform: translateY(14px);}
+  to{opacity:1; transform: translateY(0);}
+}
+
+/* ===================== MOBILE ===================== */
+@media(max-width: 900px){
+  .sidebar{
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+  .content{
+    margin-left: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+
+    <div class="sb-top">
+      <div class="sb-title">🌾 <span id="sbBrand">Agri Credit AI</span></div>
+    </div>
+
+    <div class="nav-links">
+      <a href="#" class="active" onclick="loadHome(); setActive('navHome')" id="navHome">
+        <div class="icon">🏠</div>
+        <span>Home</span>
+      </a>
+
+      <a href="#" onclick="loadPage('form'); setActive('navForm')" id="navForm">
+        <div class="icon">🧾</div>
+        <span>Agri Credit Application</span>
+      </a>
+
+      <a href="#" onclick="loadPage('dashboard'); setActive('navDash')" id="navDash">
+        <div class="icon">📊</div>
+        <span>FPO Credit Dashboard</span>
+      </a>
+
+      <a href="#" onclick="loadPage('analytics'); setActive('navAnalytics')" id="navAnalytics">
+        <div class="icon">🌍</div>
+        <span>Ecosystem Risk Analytics</span>
+      </a>
+
+      <a href="/logout" id="navLogout">
+        <div class="icon">🚪</div>
+        <span>Logout</span>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content" id="content">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+
+      <!-- Menu Button -->
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+
+      <div class="top-right">
+        <!-- Language -->
+        <select class="lang-select" id="langSelect" onchange="setLanguage(this.value)">
+          <option value="en">English</option>
+          <option value="hi">हिंदी</option>
+          <option value="mr">मराठी</option>
+          <option value="ta">தமிழ்</option>
+        </select>
+
+        <!-- Dark Switch -->
+        <div class="dark-switch" onclick="toggleDark()">
+          <div class="switch-ball" id="switchBall">☀️</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- HOME HERO -->
+    <div class="card" id="homeCard">
+      <h2 id="pageTitle"></h2>
+      <p id="pageDesc"></p>
+      <p style="margin-top:18px;font-weight:950;">
+        🌱 Empowering Farmers • 📊 Smarter Credit • 🌍 Sustainable Impact
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= SIDEBAR TOGGLE ================= -->
+<script>
+function toggleSidebar(){
+  const sb = document.getElementById("sidebar");
+  const content = document.getElementById("content");
+
+  sb.classList.toggle("hidden");
+  content.classList.toggle("full");
+}
+</script>
+
+<!-- ================= ACTIVE NAV ================= -->
+<script>
+function setActive(id){
+  document.querySelectorAll(".sidebar a").forEach(a=>a.classList.remove("active"));
+  document.getElementById(id)?.classList.add("active");
+}
+</script>
+
+<!-- ================= PAGE LOADER ================= -->
+<script>
+function loadPage(page) {
+  fetch("/page/" + page)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("content").innerHTML = `
+        <div class="topbar">
+
+          <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+
+          <div class="top-right">
+            <select class="lang-select" id="langSelect" onchange="setLanguage(this.value)">
+              <option value="en">English</option>
+              <option value="hi">हिंदी</option>
+              <option value="mr">मराठी</option>
+              <option value="ta">தமிழ்</option>
+            </select>
+
+            <div class="dark-switch" onclick="toggleDark()">
+              <div class="switch-ball" id="switchBall">☀️</div>
+            </div>
+          </div>
+
+        </div>
+      ` + html;
+
+      const scripts = document.getElementById("content").querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        newScript.textContent = oldScript.textContent;
+        document.body.appendChild(newScript);
+      });
+
+      setTimeout(() => {
+        const lang = localStorage.getItem("selectedLang") || "en";
+        document.getElementById("langSelect").value = lang;
+        setLanguage(lang);
+
+        updateSwitchIcon();
+
+        if (typeof renderAnalytics === "function") renderAnalytics();
+        if (typeof syncAgriCards === "function") syncAgriCards();
+        if (typeof renderChart === "function") renderChart();
+      }, 200);
+    });
+}
+</script>
+
+<!-- ================= HOME LOADER ================= -->
+<script>
+function loadHome() {
+  document.getElementById("content").innerHTML = `
+    <div class="topbar">
+
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+
+      <div class="top-right">
+        <select class="lang-select" id="langSelect" onchange="setLanguage(this.value)">
+          <option value="en">English</option>
+          <option value="hi">हिंदी</option>
+          <option value="mr">मराठी</option>
+          <option value="ta">தமிழ்</option>
+        </select>
+
+        <div class="dark-switch" onclick="toggleDark()">
+          <div class="switch-ball" id="switchBall">☀️</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card" id="homeCard">
+      <h2 id="pageTitle"></h2>
+      <p id="pageDesc"></p>
+      <p style="margin-top:18px;font-weight:950;">
+        🌱 Empowering Farmers • 📊 Smarter Credit • 🌍 Sustainable Impact
+      </p>
+    </div>
+  `;
+
+  const lang = localStorage.getItem("selectedLang") || "en";
+  document.getElementById("langSelect").value = lang;
+  setLanguage(lang);
+
+  updateSwitchIcon();
+}
+</script>
+
+<!-- ================= DARK MODE ================= -->
+<script>
+function toggleDark() {
+  document.body.classList.toggle("dark");
+  updateSwitchIcon();
+}
+
+function updateSwitchIcon(){
+  const ball = document.getElementById("switchBall");
+  if(!ball) return;
+
+  if(document.body.classList.contains("dark")){
+    ball.innerText = "🌙";
+  } else {
+    ball.innerText = "☀️";
+  }
+}
+</script>
+
+<!-- ================= HOME TRANSLATIONS ================= -->
+<script>
+const homeTranslations = {
+  en: {
+    title: "AI Credit & FPO Risk Platform",
+    desc: "This platform provides intelligent loan risk evaluation for farmers, FPOs, and agricultural enterprises with ESG impact and smart credit limits.",
+    navHome: "Home",
+    navForm: "Agri Credit Application",
+    navDash: "FPO Credit Dashboard",
+    navAnalytics: "Ecosystem Risk Analytics",
+    navLogout: "Logout"
+  },
+  hi: {
+    title: "एआई क्रेडिट और एफपीओ जोखिम मंच",
+    desc: "यह प्लेटफ़ॉर्म किसानों, एफपीओ और कृषि व्यवसायों के लिए ईएसजी प्रभाव और स्मार्ट क्रेडिट सीमा के साथ ऋण जोखिम मूल्यांकन प्रदान करता है।",
+    navHome: "होम",
+    navForm: "कृषि ऋण आवेदन",
+    navDash: "एफपीओ डैशबोर्ड",
+    navAnalytics: "इकोसिस्टम जोखिम विश्लेषण",
+    navLogout: "लॉगआउट"
+  },
+  mr: {
+    title: "एआय क्रेडिट आणि एफपीओ जोखीम प्रणाली",
+    desc: "ही प्रणाली शेतकरी, एफपीओ आणि कृषी उद्योगांसाठी ईएसजी प्रभाव आणि स्मार्ट कर्ज मर्यादेसह जोखीम मूल्यांकन प्रदान करते.",
+    navHome: "मुख्यपृष्ठ",
+    navForm: "कृषी कर्ज अर्ज",
+    navDash: "एफपीओ डॅशबोर्ड",
+    navAnalytics: "इकोसिस्टम जोखीम विश्लेषण",
+    navLogout: "लॉगआउट"
+  },
+  ta: {
+    title: "AI கடன் மற்றும் FPO அபாய தளம்",
+    desc: "இந்த தளம் விவசாயிகள், FPO மற்றும் வேளாண் நிறுவனங்களுக்கு ESG தாக்கம் மற்றும் ஸ்மார்ட் கடன் வரம்புடன் கடன் அபாய மதிப்பீட்டை வழங்குகிறது.",
+    navHome: "முகப்பு",
+    navForm: "விவசாய கடன் விண்ணப்பம்",
+    navDash: "FPO டாஷ்போர்டு",
+    navAnalytics: "சூழல் அபாய பகுப்பாய்வு",
+    navLogout: "வெளியேறு"
+  }
+};
+</script>
+
+<!-- ================= GLOBAL LANGUAGE ENGINE ================= -->
+<script>
+function setLanguage(lang) {
+  localStorage.setItem("selectedLang", lang);
+  const t = homeTranslations[lang] || homeTranslations.en;
+
+  document.getElementById("pageTitle").innerText = t.title;
+  document.getElementById("pageDesc").innerText = t.desc;
+
+  document.querySelector("#navHome span").innerText = t.navHome;
+  document.querySelector("#navForm span").innerText = t.navForm;
+  document.querySelector("#navDash span").innerText = t.navDash;
+  document.querySelector("#navAnalytics span").innerText = t.navAnalytics;
+  document.querySelector("#navLogout span").innerText = t.navLogout;
+
+  if (typeof applyFormLanguage === "function") applyFormLanguage(lang);
+  if (typeof applyDashLanguage === "function") applyDashLanguage(lang);
+  if (typeof applyAnalyticsLanguage === "function") applyAnalyticsLanguage(lang);
+}
+
+window.onload = () => {
+  const lang = localStorage.getItem("selectedLang") || "en";
+  document.getElementById("langSelect").value = lang;
+  setLanguage(lang);
+  updateSwitchIcon();
+};
+</script>
+
+<!-- ================= GLOBAL AGRI DATA STORE ================= -->
+<script>
+window.agriData = {
+  kisanCard: false,
+  rupayCard: false,
+  soilCard: false,
+  insuranceCard: false
+};
+</script>
+
+<!-- ================= AGRI CARD SYNC ENGINE ================= -->
+<script>
+function syncAgriCards() {
+  window.agriData.kisanCard =
+    document.getElementById("kisanCard")?.checked || false;
+
+  window.agriData.rupayCard =
+    document.getElementById("rupayCard")?.checked || false;
+
+  window.agriData.soilCard =
+    document.getElementById("soilCard")?.checked || false;
+
+  window.agriData.insuranceCard =
+    document.getElementById("insuranceCard")?.checked || false;
+}
+</script>
+
+</body>
+</html>

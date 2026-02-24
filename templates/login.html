@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Agri Credit AI</title>
+  <link rel="stylesheet" href="/static/style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+
+      /* 🌾 Agriculture Background */
+      background: 
+        linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+        url("https://images.unsplash.com/1557234195-bd9f290f0e4d?auto=format&fit=crop&w=1920&q=80");
+
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #2e7d32;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #2e7d32;
+      box-shadow: 0 0 5px rgba(46, 125, 50, 0.4);
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #2e7d32, #66bb6a);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .footer-text {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-container">
+    <div class="card">
+
+      <div class="logo">🌾</div>
+      <h2>Agri Credit AI</h2>
+      <p class="subtitle">Secure Underwriter Access Portal</p>
+
+      {% if error %}
+        <p class="error">{{ error }}</p>
+      {% endif %}
+
+      <form method="POST">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" name="username" placeholder="Enter your username" required>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit">Login</button>
+      </form>
+
+      <p class="footer-text">
+        🔐 Secure Agricultural Finance Platform<br>
+        Authorized Personnel Only
+      </p>
+
+    </div>
+  </div>
+
+</body>
+</html>

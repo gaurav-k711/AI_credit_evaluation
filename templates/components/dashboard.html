@@ -1,0 +1,263 @@
+<div class="card">
+
+<h2 id="dashTitle"></h2>
+<p id="dashDesc"></p>
+
+<div class="stats-bar">
+    <div class="stat-box">
+        <span id="statTotalLabel"></span>
+        <h3 id="statTotal"></h3>
+    </div>
+    <div class="stat-box approve">
+        <span id="statApprovedLabel"></span>
+        <h3 id="statApproved"></h3>
+    </div>
+    <div class="stat-box review">
+        <span id="statReviewLabel"></span>
+        <h3 id="statReview"></h3>
+    </div>
+</div>
+
+<!-- SMART AI -->
+<div class="card" style="margin-bottom:20px;">
+    <h2 id="smartTitle"></h2>
+    <p id="smartDesc"></p>
+
+    <div class="stats-bar">
+        <div class="stat-box">
+            <span id="altLabel"></span>
+            <h3>{{ smart_preview.alt_data_confidence or 0 }}</h3>
+        </div>
+
+        <div class="stat-box review">
+            <span id="climateLabel"></span>
+            <h3>{{ smart_preview.climate_risk or 0 }}</h3>
+        </div>
+
+        <div class="stat-box approve">
+            <span id="fraudLabel"></span>
+            <h3>{{ smart_preview.fraud_flag or "No data" }}</h3>
+        </div>
+
+        <div class="stat-box">
+            <span id="loanLabel"></span>
+            <h3>₹ {{ smart_preview.recommended_loan or 0 }}</h3>
+        </div>
+    </div>
+</div>
+
+<!-- TABLE -->
+<table class="styled-table">
+<thead>
+<tr>
+<th id="thBusiness"></th>
+<th id="thRisk"></th>
+<th id="thDecision"></th>
+<th id="thConfidence"></th>
+</tr>
+</thead>
+
+<tbody>
+{% for app in applications %}
+<tr>
+<td>{{ app.business_type }}</td>
+<td>{{ app.risk_score }}%</td>
+<td>
+<span class="badge" data-key="{{ app.decision }}">{{ app.decision }}</span>
+</td>
+<td class="conf-cell">{{ app.confidence }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+</div>
+
+<!-- EXPLAINABLE AI -->
+<div class="card" style="margin-top:20px;">
+    <h2 id="explainTitle"></h2>
+    <p id="explainDesc"></p>
+
+    <div class="stats-bar">
+        <div class="stat-box">
+            <span id="expDecision"></span>
+            <h3>{{ explain_data.decision or "-" }}</h3>
+        </div>
+
+        <div class="stat-box">
+            <span id="expConfidence"></span>
+            <h3>{{ explain_data.confidence or "-" }}</h3>
+        </div>
+
+        <div class="stat-box">
+            <span id="expRisk"></span>
+            <h3>{{ explain_data.risk_score or "-" }}</h3>
+        </div>
+
+        <div class="stat-box">
+            <span id="expESG"></span>
+            <h3>{{ explain_data.esg_score or "-" }}</h3>
+        </div>
+
+        <div class="stat-box">
+            <span id="expIncome"></span>
+            <h3>₹ {{ explain_data.income or "-" }}</h3>
+        </div>
+
+        <div class="stat-box">
+            <span id="expReason"></span>
+            <h3>{{ explain_data.key_reason or "System evaluation" }}</h3>
+        </div>
+    </div>
+</div>
+
+<!-- LIVE REASONING -->
+<div class="card" style="margin-top:20px;">
+    <h2 id="reasonTitle"></h2>
+    <p id="reasonDesc"></p>
+
+    <div class="stats-bar">
+        <div class="stat-box">
+            <span id="reasonIncomeLoan"></span>
+            <h3>₹ {{ explain_data.income or 0 }} / ₹ {{ explain_data.loan_requested or 0 }}</h3>
+        </div>
+
+        <div class="stat-box review">
+            <span id="reasonRisk"></span>
+            <h3>{{ explain_data.risk_score or "-" }}</h3>
+        </div>
+
+        <div class="stat-box approve">
+            <span id="reasonESG"></span>
+            <h3>{{ explain_data.esg_score or "-" }}</h3>
+        </div>
+
+        <div class="stat-box">
+            <span id="reasonBehaviour"></span>
+            <h3>{{ explain_data.key_reason or "-" }}</h3>
+        </div>
+
+        <div class="stat-box">
+            <span id="reasonFinal"></span>
+            <h3>{{ explain_data.decision or "-" }} ({{ explain_data.confidence or "-" }})</h3>
+        </div>
+    </div>
+</div>
+
+<!-- STYLES -->
+<style>
+.stats-bar { display:flex; gap:15px; margin-bottom:20px; flex-wrap:wrap; }
+.stat-box { flex:1; background:rgba(46,125,50,0.1); padding:15px; border-radius:10px; text-align:center; min-width:140px; }
+.stat-box.approve { background:rgba(76,175,80,0.2); }
+.stat-box.review { background:rgba(255,193,7,0.2); }
+
+.styled-table { width:100%; border-collapse:collapse; margin-top:10px; font-size:14px; }
+.styled-table thead { background:#2e7d32; color:white; }
+.styled-table th,.styled-table td { padding:10px; text-align:center; border-bottom:1px solid #ddd; }
+
+.badge { padding:6px 14px; border-radius:15px; font-weight:bold; font-size:12px; }
+.badge[data-key="APPROVE"]{ background:#c8e6c9; color:#1b5e20; }
+.badge[data-key="REVIEW"]{ background:#fff3cd; color:#856404; }
+.badge[data-key="REJECT"]{ background:#f8d7da; color:#721c24; }
+</style>
+
+<!-- LANGUAGE ENGINE -->
+<script>
+const dashTranslations = {
+
+en:{
+dashTitle:"FPO Credit Dashboard",
+dashDesc:"Real-time enterprise and farmer credit exposure overview",
+thBusiness:"Business", thRisk:"Risk Score", thDecision:"Decision", thConfidence:"Confidence",
+APPROVE:"APPROVED", REVIEW:"REVIEW", REJECT:"REJECTED",
+total:"Total Applications", approved:"Approved", reviewed:"Under Review",
+smartTitle:"AI Smart Insights", smartDesc:"AI-driven alternative credit, climate and fraud intelligence",
+altLabel:"Alt Credit Confidence", climateLabel:"Climate Risk", fraudLabel:"Fraud Risk", loanLabel:"AI Recommended Loan",
+explainTitle:"AI Decision Explanation", explainDesc:"Why system approved/rejected this application",
+expDecision:"Decision", expConfidence:"Confidence", expRisk:"Risk Score", expESG:"ESG Impact",
+expIncome:"Income Considered", expReason:"Behaviour Insight",
+reasonTitle:"Live AI Reasoning", reasonDesc:"Real-time decision logic generated by AI",
+reasonIncomeLoan:"Income vs Loan", reasonRisk:"Risk Influence", reasonESG:"ESG Impact",
+reasonBehaviour:"Behaviour Signal", reasonFinal:"Final AI Logic"
+},
+
+hi:{
+dashTitle:"एफपीओ क्रेडिट डैशबोर्ड",
+dashDesc:"कृषि और एफपीओ ऋण जोखिम का वास्तविक समय दृश्य",
+thBusiness:"व्यवसाय", thRisk:"जोखिम स्कोर", thDecision:"निर्णय", thConfidence:"विश्वास स्तर",
+APPROVE:"स्वीकृत", REVIEW:"समीक्षा", REJECT:"अस्वीकृत",
+total:"कुल आवेदन", approved:"स्वीकृत", reviewed:"समीक्षा में",
+smartTitle:"एआई स्मार्ट इनसाइट्स", smartDesc:"एआई आधारित क्रेडिट, जलवायु और धोखाधड़ी विश्लेषण",
+altLabel:"वैकल्पिक क्रेडिट भरोसा", climateLabel:"जलवायु जोखिम", fraudLabel:"धोखाधड़ी जोखिम", loanLabel:"एआई अनुशंसित ऋण",
+explainTitle:"एआई निर्णय स्पष्टीकरण", explainDesc:"सिस्टम ने यह निर्णय क्यों लिया",
+expDecision:"निर्णय", expConfidence:"विश्वास स्तर", expRisk:"जोखिम स्कोर", expESG:"ईएसजी प्रभाव",
+expIncome:"आय", expReason:"व्यवहार संकेत",
+reasonTitle:"लाइव एआई तर्क", reasonDesc:"एआई द्वारा उत्पन्न निर्णय तर्क",
+reasonIncomeLoan:"आय बनाम ऋण", reasonRisk:"जोखिम प्रभाव", reasonESG:"ईएसजी प्रभाव",
+reasonBehaviour:"व्यवहार संकेत", reasonFinal:"अंतिम एआई निर्णय"
+},
+
+mr:{
+dashTitle:"एफपीओ क्रेडिट डॅशबोर्ड",
+dashDesc:"कृषी आणि एफपीओ कर्ज जोखीमचे थेट दृश्य",
+thBusiness:"व्यवसाय", thRisk:"जोखीम स्कोअर", thDecision:"निर्णय", thConfidence:"विश्वास स्तर",
+APPROVE:"मंजूर", REVIEW:"पुनरावलोकन", REJECT:"नाकारले",
+total:"एकूण अर्ज", approved:"मंजूर", reviewed:"पुनरावलोकनात",
+smartTitle:"एआय स्मार्ट इनसाइट्स", smartDesc:"एआय आधारित क्रेडिट, हवामान व फसवणूक विश्लेषण",
+altLabel:"पर्यायी क्रेडिट विश्वास", climateLabel:"हवामान जोखीम", fraudLabel:"फसवणूक जोखीम", loanLabel:"एआय सुचवलेले कर्ज",
+explainTitle:"एआय निर्णय स्पष्टीकरण", explainDesc:"सिस्टमने हा निर्णय का घेतला",
+expDecision:"निर्णय", expConfidence:"विश्वास स्तर", expRisk:"जोखीम स्कोअर", expESG:"ईएसजी प्रभाव",
+expIncome:"उत्पन्न", expReason:"वर्तन संकेत",
+reasonTitle:"लाईव्ह एआय तर्क", reasonDesc:"एआयद्वारे तयार निर्णय तर्क",
+reasonIncomeLoan:"उत्पन्न विरुद्ध कर्ज", reasonRisk:"जोखीम प्रभाव", reasonESG:"ईएसजी प्रभाव",
+reasonBehaviour:"वर्तन संकेत", reasonFinal:"अंतिम एआय निर्णय"
+},
+
+ta:{
+dashTitle:"FPO கடன் டாஷ்போர்டு",
+dashDesc:"விவசாய மற்றும் FPO கடன் அபாயத்தின் நேரடி பார்வை",
+thBusiness:"வணிகம்", thRisk:"ஆபத்து மதிப்பெண்", thDecision:"முடிவு", thConfidence:"நம்பிக்கை நிலை",
+APPROVE:"அங்கீகரிக்கப்பட்டது", REVIEW:"மதிப்பாய்வு", REJECT:"நிராகரிக்கப்பட்டது",
+total:"மொத்த விண்ணப்பங்கள்", approved:"அங்கீகரிக்கப்பட்டவை", reviewed:"மதிப்பாய்வில்",
+smartTitle:"AI ஸ்மார்ட் இன்சைட்ஸ்", smartDesc:"AI அடிப்படையிலான கடன், காலநிலை மற்றும் மோசடி பகுப்பாய்வு",
+altLabel:"மாற்று கடன் நம்பிக்கை", climateLabel:"காலநிலை அபாயம்", fraudLabel:"மோசடி அபாயம்", loanLabel:"AI பரிந்துரைத்த கடன்",
+explainTitle:"AI முடிவு விளக்கம்", explainDesc:"இந்த முடிவை அமைப்பு ஏன் எடுத்தது",
+expDecision:"முடிவு", expConfidence:"நம்பிக்கை", expRisk:"ஆபத்து மதிப்பெண்", expESG:"ESG தாக்கம்",
+expIncome:"வருமானம்", expReason:"நடத்தை சிக்னல்",
+reasonTitle:"நேரடி AI காரணம்", reasonDesc:"AI உருவாக்கிய முடிவு தர்க்கம்",
+reasonIncomeLoan:"வருமானம் vs கடன்", reasonRisk:"ஆபத்து தாக்கம்", reasonESG:"ESG தாக்கம்",
+reasonBehaviour:"நடத்தை சிக்னல்", reasonFinal:"இறுதி AI முடிவு"
+}
+
+};
+
+function applyDashLanguage(lang){
+const t=dashTranslations[lang]||dashTranslations.en;
+
+Object.keys(t).forEach(key=>{
+  const el=document.getElementById(key);
+  if(el) el.innerText=t[key];
+});
+
+const rows=document.querySelectorAll("tbody tr");
+let approved=0,review=0;
+
+rows.forEach(r=>{
+const badge=r.querySelector(".badge");
+const key=badge.getAttribute("data-key");
+if(key==="APPROVE")approved++;
+if(key==="REVIEW")review++;
+badge.innerText=t[key];
+});
+
+document.getElementById("statTotalLabel").innerText=t.total;
+document.getElementById("statApprovedLabel").innerText=t.approved;
+document.getElementById("statReviewLabel").innerText=t.reviewed;
+
+document.getElementById("statTotal").innerText=rows.length;
+document.getElementById("statApproved").innerText=approved;
+document.getElementById("statReview").innerText=review;
+}
+
+applyDashLanguage(localStorage.getItem("selectedLang")||"en");
+</script>
